@@ -7,6 +7,11 @@ const deps = require("./package.json").dependencies;
 
 const printCompilationMessage = require("./compilation.config.js");
 
+const EDU_URL =
+  process.env.NODE_ENV === "deployment"
+    ? "edu@http://localhost:3001/remoteEntry.js"
+    : "edu@http://localhost:3001/remoteEntry.js";
+
 module.exports = (_, argv) => ({
   output: {
     publicPath: "http://localhost:3000/",
@@ -65,7 +70,7 @@ module.exports = (_, argv) => ({
       name: "shell",
       filename: "remoteEntry.js",
       remotes: {
-        edu: "edu@http://localhost:3001/remoteEntry.js",
+        edu: EDU_URL,
       },
       exposes: {},
       shared: {

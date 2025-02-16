@@ -10,7 +10,7 @@ const printCompilationMessage = require("./compilation.config.js");
 const EDU_URL =
   process.env.NODE_ENV === "deployment"
     ? "edu@http://localhost:3001/remoteEntry.js"
-    : "edu@http://localhost:3001/remoteEntry.js";
+    : "edu@hhttps://mfa-practice-edu.vercel.app//remoteEntry.js";
 
 module.exports = (_, argv) => ({
   output: {

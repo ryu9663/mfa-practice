@@ -10,11 +10,16 @@ const printCompilationMessage = require("./compilation.config.js");
 const EDU_URL =
   process.env.NODE_ENV === "deployment"
     ? "edu@http://localhost:3001/remoteEntry.js"
-    : "edu@hhttps://mfa-practice-edu.vercel.app//remoteEntry.js";
+    : "edu@https://mfa-practice-edu.vercel.app/remoteEntry.js";
+
+const PUBLIC_PATH =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3000/"
+    : "https://mfa-practice-shell.vercel.app/";
 
 module.exports = (_, argv) => ({
   output: {
-    publicPath: "http://localhost:3000/",
+    publicPath: PUBLIC_PATH,
   },
 
   resolve: {

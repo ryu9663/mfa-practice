@@ -7,9 +7,13 @@ const deps = require("./package.json").dependencies;
 
 const printCompilationMessage = require("./compilation.config.js");
 
+const PUBLIC_PATH =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3001/"
+    : "https://mfa-practice-edu.vercel.app/";
 module.exports = (_, argv) => ({
   output: {
-    publicPath: "http://localhost:3001/",
+    publicPath: PUBLIC_PATH,
   },
 
   resolve: {

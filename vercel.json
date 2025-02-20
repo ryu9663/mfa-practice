@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/edu/(.*)", "destination": "/apps/edu/src/index.html" },
-    { "source": "/(.*)", "destination": "/apps/shell/src/index.html" }
+    { "source": "/edu/(.*)", "destination": "/edu" },
+    { "source": "/(.*)", "destination": "/" }
   ]
 }

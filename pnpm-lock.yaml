@@ -29,6 +29,9 @@ importers:
       react-router-dom:
         specifier: ^7.1.5
         version: 7.1.5(react-dom@19.0.0)(react@19.0.0)
+      styled-components:
+        specifier: ^6.1.15
+        version: 6.1.15(react-dom@19.0.0)(react@19.0.0)
     devDependencies:
       '@babel/core':
         specifier: ^7.15.8
@@ -60,6 +63,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.0.3
         version: 19.0.3(@types/react@19.0.8)
+      '@types/styled-components':
+        specifier: ^5.1.34
+        version: 5.1.34
       autoprefixer:
         specifier: ^10.1.0
         version: 10.4.20(postcss@8.5.2)

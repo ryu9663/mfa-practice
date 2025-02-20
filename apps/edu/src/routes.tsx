@@ -1,5 +1,6 @@
 import { type RouteObject } from "react-router-dom";
 import { AppRoutingManager } from "@mfa/shell-router";
+import { Cards } from "./components/Cards";
 
 export const routes: RouteObject[] = [
   {
@@ -9,7 +10,11 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <div>App Edu Root</div>,
+        element: (
+          <div>
+            <Cards />
+          </div>
+        ),
       },
       {
         path: "1",

@@ -24,6 +24,7 @@
     "@types/node": "^22.13.4",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
+    "@types/styled-components": "^5.1.34",
     "autoprefixer": "^10.1.0",
     "babel-loader": "^8.2.2",
     "cross-env": "^7.0.3",
@@ -43,6 +44,7 @@
     "@mfa/shell-router": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.1.5"
+    "react-router-dom": "^7.1.5",
+    "styled-components": "^6.1.15"
   }
 }

@@ -15,7 +15,7 @@ const browserRouter = createBrowserRouter([
       {
         index: true,
         // element: <Navigate to={`${EDU_ROUTING_PREFIX}`} />,
-        element: <div>Hi</div>,
+        element: <div>Hdssi</div>,
       },
       {
         path: `${EDU_ROUTING_PREFIX}/*`,

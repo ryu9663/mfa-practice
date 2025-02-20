@@ -7,96 +7,97 @@ const deps = require("./package.json").dependencies;
 
 const printCompilationMessage = require("./compilation.config.js");
 
-const EDU_URL =
-  process.env.NODE_ENV === "deployment"
-    ? "edu@http://localhost:3001/remoteEntry.js"
-    : "edu@https://mfa-practice-edu.vercel.app/remoteEntry.js";
+module.exports = (_, argv) => {
+  const isDevelopment = argv.mode === "development";
 
-const PUBLIC_PATH =
-  process.env.NODE_ENV === "development"
+  const PUBLIC_PATH = isDevelopment
     ? "http://localhost:3000/"
     : "https://mfa-practice-shell.vercel.app/";
 
-module.exports = (_, argv) => ({
-  output: {
-    publicPath: PUBLIC_PATH,
-  },
-
-  resolve: {
-    extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
-  },
-
-  devServer: {
-    port: 3000,
-    historyApiFallback: true,
-    watchFiles: [path.resolve(__dirname, "src")],
-    onListening: function (devServer) {
-      const port = devServer.server.address().port;
-
-      printCompilationMessage("compiling", port);
-
-      devServer.compiler.hooks.done.tap("OutputMessagePlugin", (stats) => {
-        setImmediate(() => {
-          if (stats.hasErrors()) {
-            printCompilationMessage("failure", port);
-          } else {
-            printCompilationMessage("success", port);
-          }
-        });
-      });
+  const EDU_URL = isDevelopment
+    ? "edu@http://localhost:3001/remoteEntry.js"
+    : "edu@https://mfa-practice-edu.vercel.app/remoteEntry.js";
+  return {
+    output: {
+      publicPath: PUBLIC_PATH,
     },
-  },
 
-  module: {
-    rules: [
-      {
-        test: /\.m?js/,
-        type: "javascript/auto",
-        resolve: {
-          fullySpecified: false,
+    resolve: {
+      extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
+    },
+
+    devServer: {
+      port: 3000,
+      historyApiFallback: true,
+      watchFiles: [path.resolve(__dirname, "src")],
+      onListening: function (devServer) {
+        const port = devServer.server.address().port;
+
+        printCompilationMessage("compiling", port);
+
+        devServer.compiler.hooks.done.tap("OutputMessagePlugin", (stats) => {
+          setImmediate(() => {
+            if (stats.hasErrors()) {
+              printCompilationMessage("failure", port);
+            } else {
+              printCompilationMessage("success", port);
+            }
+          });
+        });
+      },
+    },
+
+    module: {
+      rules: [
+        {
+          test: /\.m?js/,
+          type: "javascript/auto",
+          resolve: {
+            fullySpecified: false,
+          },
         },
-      },
-      {
-        test: /\.(css|s[ac]ss)$/i,
-        use: ["style-loader", "css-loader", "postcss-loader"],
-      },
-      {
-        test: /\.(ts|tsx|js|jsx)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
+        {
+          test: /\.(css|s[ac]ss)$/i,
+          use: ["style-loader", "css-loader", "postcss-loader"],
         },
-      },
+        {
+          test: /\.(ts|tsx|js|jsx)$/,
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader",
+          },
+        },
+      ],
+    },
+
+    plugins: [
+      new ModuleFederationPlugin({
+        name: "shell",
+        filename: "remoteEntry.js",
+        remotes: {
+          edu: EDU_URL,
+        },
+        exposes: {},
+        shared: {
+          ...deps,
+          react: {
+            singleton: true,
+            requiredVersion: deps.react,
+          },
+          "react-dom": {
+            singleton: true,
+            requiredVersion: deps["react-dom"],
+          },
+
+          "@mfa/shell-router": {
+            singleton: true,
+          },
+        },
+      }),
+      new HtmlWebPackPlugin({
+        template: "./src/index.html",
+      }),
+      new Dotenv(),
     ],
-  },
-
-  plugins: [
-    new ModuleFederationPlugin({
-      name: "shell",
-      filename: "remoteEntry.js",
-      remotes: {
-        edu: EDU_URL,
-      },
-      exposes: {},
-      shared: {
-        ...deps,
-        react: {
-          singleton: true,
-          requiredVersion: deps.react,
-        },
-        "react-dom": {
-          singleton: true,
-          requiredVersion: deps["react-dom"],
-        },
-
-        "@mfa/shell-router": {
-          singleton: true,
-        },
-      },
-    }),
-    new HtmlWebPackPlugin({
-      template: "./src/index.html",
-    }),
-    new Dotenv(),
-  ],
-});
+  };
+};

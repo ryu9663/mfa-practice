@@ -3,6 +3,7 @@ const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPl
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const deps = require("./package.json").dependencies;
 
@@ -98,6 +99,11 @@ module.exports = (_, argv) => {
         template: "./src/index.html",
       }),
       new Dotenv(),
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: path.resolve(__dirname, "public/assets"), to: "assets" },
+        ],
+      }),
     ],
   };
 };
